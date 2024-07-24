@@ -1,36 +1,34 @@
 ﻿using Core;
+using Core.Exceptions;
+using Core.Models;
+using Core.Services;
 using FluentResults;
 using FluentResultsTrial;
+using FluentResultsTrial.Results;
+using FluentResultsTrial.Results.Errors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using UseCases;
 using UseCases.Dragons.Commands;
 using UseCases.Dragons.Queries;
 
-Result.Setup(cfg =>
-{
-    cfg.DefaultTryCatchHandler = exception => exception switch
-    {
-        DomainException domainException => new ExceptionError(domainException),
-        NotFoundException notFoundException => new NotFoundError(notFoundException),
-        _ => new UnexpectedError(exception)
-    };
-});
-
 var services = new ServiceCollection();
 
 services.AddSingleton<DragonService>();
 services.AddMediatR(r => r.RegisterServicesFromAssemblyContaining(typeof(MediatRMarkingClass)));
 
+ResultSetup.Setup();
 
 var sp = services.BuildServiceProvider();
 
 var mediatr = sp.GetRequiredService<IMediator>();
 
 var createDragonCommand = new CreateDragonCommand(new Dragon { Name = "Spyro", Age = 2 });
-var result = await Result.Try(() => mediatr.Send(createDragonCommand));
+var resultCreate1 = await Result.Try(() => mediatr.Send(createDragonCommand));
+var resultCreate2 = await Result.Try(() => mediatr.Send(createDragonCommand));
 
-result.CreateHttpResponse();
+resultCreate1.CreateHttpResponse();
+resultCreate2.CreateHttpResponse();
 
 var findDragonCommand = new GetDragonQuery("Spyro");
 var findResult = await Result.Try(() => mediatr.Send(findDragonCommand));

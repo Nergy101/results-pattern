@@ -1,6 +1,7 @@
-using Core;
+using Core.Exceptions;
+using Core.Models;
 
-namespace FluentResultsTrial;
+namespace Core.Services;
 
 public class DragonService
 {
@@ -16,7 +17,7 @@ public class DragonService
 
         if (!_dragons.TryAdd(dragon.Name, dragon))
         {
-            throw new ArgumentException($"Dragon with name {dragon.Name} already exists");
+            throw new DomainException($"Dragon with name {dragon.Name} already exists");
         }
     }
 
