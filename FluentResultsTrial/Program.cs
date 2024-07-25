@@ -1,11 +1,7 @@
-﻿using Core;
-using Core.Exceptions;
-using Core.Models;
+﻿using Core.Models;
 using Core.Services;
 using FluentResults;
-using FluentResultsTrial;
 using FluentResultsTrial.Results;
-using FluentResultsTrial.Results.Errors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using UseCases;
